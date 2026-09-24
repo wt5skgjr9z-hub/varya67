@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для моей любимой Бесяки ❤️</title>
+    <title>Для тебя</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@400;600;700;800&display=swap');
+        :root {
+            --bg-color: #FDFBF7;
+            --text-color: #3A3331;
+            --accent-color: #9E8178;
+        }
 
         * {
             box-sizing: border-box;
@@ -14,567 +22,274 @@
         }
 
         body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #feada6 100%);
             min-height: 100vh;
-            color: #4a4a4a;
+            display: flex;
+            flex-direction: column;
             overflow-x: hidden;
-            position: relative;
+            scroll-behavior: smooth;
         }
 
-        /* Анимированный интерактивный фон с сердечками */
-        #bgCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        /* --- Элегантная секция приветствия --- */
+        .hero {
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        h1 {
-            font-family: 'Caveat', cursive;
-            font-size: 3.8rem;
-            color: #d63384;
-            text-shadow: 3px 3px 10px rgba(255, 255, 255, 0.9);
-            margin-bottom: 10px;
-            line-height: 1.1;
-        }
-
-        p.subtitle {
-            font-size: 1.25rem;
-            color: #6a1b4d;
-            background: rgba(255, 255, 255, 0.75);
-            padding: 10px 28px;
-            border-radius: 25px;
-            backdrop-filter: blur(8px);
-            display: inline-block;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.15);
-        }
-
-        /* Главный контейнер биющегося сердца */
-        .heart-wrapper {
-            position: relative;
-            width: 350px;
-            height: 350px;
-            margin: 20px 0 40px;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-
-        .heart-card {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.1s ease-out;
-            display: flex;
             justify-content: center;
-            align-items: center;
+            padding: 2rem;
+            position: relative;
+            perspective: 1000px; /* Для 3D эффекта */
         }
 
-        /* Анимация биения сердца */
-        @keyframes pulseHeart {
-            0% { transform: scale(1); }
-            14% { transform: scale(1.09); }
-            28% { transform: scale(0.98); }
-            42% { transform: scale(1.14); }
-            70% { transform: scale(1); }
-            100% { transform: scale(1); }
+        /* --- 3D и Пульс Сердца --- */
+        .tilt-wrapper {
+            transition: transform 0.1s ease-out;
+            margin-bottom: 2rem;
         }
 
-        .heart-shape {
+        .pulse-wrapper {
+            animation: breathe 4s ease-in-out infinite;
+            filter: drop-shadow(0 20px 30px rgba(158, 129, 120, 0.3));
+        }
+
+        .heart-mask {
             width: 320px;
             height: 320px;
-            position: relative;
-            animation: pulseHeart 1.6s infinite ease-in-out;
-            filter: drop-shadow(0 18px 30px rgba(214, 51, 132, 0.5));
-            transition: filter 0.3s;
-        }
-
-        .heart-shape:hover {
-            filter: drop-shadow(0 22px 40px rgba(255, 20, 100, 0.8));
-        }
-
-        /* Идеальное математически ровное вырезание сердца */
-        .heart-photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            clip-path: path('M 160,288 C 160,288 20,180 20,100 C 20,40 70,10 120,10 C 148,10 160,35 160,35 C 160,35 172,10 200,10 C 250,10 300,40 300,100 C 300,180 160,288 160,288 Z');
-        }
-
-        /* Секция с большими комплиментами */
-        .section-title {
-            font-family: 'Caveat', cursive;
-            font-size: 3.2rem;
-            color: #b5179e;
-            margin: 35px 0 25px;
-            text-align: center;
-            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
-        }
-
-        .compliments-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 950px;
-            margin-bottom: 40px;
-        }
-
-        .compliment-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 20px;
-            border: 2px solid rgba(255, 182, 193, 0.8);
-            box-shadow: 0 8px 20px rgba(214, 51, 132, 0.12);
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .compliment-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(214, 51, 132, 0.25);
-            border-color: #ff416c;
-        }
-
-        .compliment-card .icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        .compliment-card h3 {
-            font-family: 'Caveat', cursive;
-            font-size: 2rem;
-            color: #d63384;
-            margin-bottom: 8px;
-        }
-
-        .compliment-card p {
-            font-size: 1.05rem;
-            line-height: 1.5;
-            color: #555;
-        }
-
-        /* Интерактивный генератор любовных признаний */
-        .interactive-box {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
-            padding: 35px;
-            border-radius: 25px;
-            max-width: 700px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 12px 35px rgba(214, 51, 132, 0.2);
-            border: 3px solid #ff9a9e;
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .interactive-box h2 {
-            font-family: 'Caveat', cursive;
-            font-size: 2.8rem;
-            color: #d63384;
-            margin-bottom: 15px;
-        }
-
-        .interactive-box #dynamicCompliment {
-            font-size: 1.35rem;
-            font-weight: 600;
-            color: #801336;
-            min-height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 25px;
-            padding: 15px;
-            background: #fff0f5;
-            border-radius: 15px;
-            border: 1px stroke #ffb6c1;
-            transition: all 0.3s ease;
-        }
-
-        .love-btn {
-            background: linear-gradient(45deg, #ff416c, #ff4b2b);
-            color: white;
-            border: none;
-            padding: 16px 36px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            border-radius: 35px;
+            background-image: url('IMG_5927.png');
+            background-size: cover;
+            background-position: center;
+            /* Идеальная маска сердца через SVG */
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z'/%3E%3C/svg%3E");
+            -webkit-mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z'/%3E%3C/svg%3E");
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
             cursor: pointer;
-            box-shadow: 0 8px 22px rgba(255, 65, 108, 0.45);
-            transition: all 0.3s ease;
+            transition: filter 0.5s ease;
         }
 
-        .love-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 12px 28px rgba(255, 65, 108, 0.65);
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
         }
 
-        .love-btn:active {
-            transform: translateY(1px);
+        /* --- Типографика и Кнопки --- */
+        .title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            text-align: center;
         }
 
-        /* Раздел галереи с рамками-Полароид */
-        .gallery {
+        .subtitle {
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .btn {
+            background: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--text-color);
+            padding: 12px 32px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        /* --- Секция Галереи (Скрыта по умолчанию) --- */
+        .gallery-section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+            padding: 5rem 2rem;
+            display: none; /* Изначально скрыто */
+            flex-direction: column;
+            align-items: center;
+            background-color: #F8F5F1;
+        }
+
+        .gallery-section.visible {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 4rem;
+        }
+
+        .gallery-grid {
             display: flex;
             flex-wrap: wrap;
+            gap: 3rem;
             justify-content: center;
-            gap: 30px;
-            width: 100%;
-            margin-bottom: 50px;
+            max-width: 1200px;
         }
 
-        .polaroid {
-            background: #ffffff;
-            padding: 15px 15px 25px 15px;
-            border-radius: 8px;
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
-            width: 280px;
-            transition: all 0.3s ease;
+        /* --- Элегантные рамки (Полароиды) --- */
+        .frame {
+            background: #FFFFFF;
+            padding: 1.2rem 1.2rem 4rem 1.2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+            transition: all 0.5s ease;
             position: relative;
-            transform: rotate(-2deg);
+            cursor: pointer;
         }
 
-        .polaroid:nth-child(2) {
-            transform: rotate(3deg);
+        .frame:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.12);
         }
 
-        .polaroid:nth-child(3) {
-            transform: rotate(-1deg);
-        }
-
-        .polaroid:hover {
-            transform: scale(1.07) rotate(0deg) translateY(-8px);
-            box-shadow: 0 20px 40px rgba(214, 51, 132, 0.3);
-            z-index: 2;
-        }
-
-        .polaroid::before {
-            content: '';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90px;
-            height: 25px;
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px rgba(220, 220, 220, 0.5) solid;
-            backdrop-filter: blur(2px);
-            z-index: 3;
-        }
-
-        .polaroid img {
-            width: 100%;
-            height: 280px;
+        .frame img {
+            width: 280px;
+            height: 380px;
             object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid #f0f0f0;
+            border-radius: 2px;
         }
 
-        .polaroid .caption {
-            font-family: 'Caveat', cursive;
-            font-size: 1.7rem;
+        .frame-caption {
+            position: absolute;
+            bottom: 1.2rem;
+            width: 100%;
             text-align: center;
-            margin-top: 15px;
-            color: #444;
-        }
-
-        footer {
-            margin-top: auto;
-            padding: 25px;
+            left: 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.2rem;
             color: #777;
-            font-size: 1rem;
-            text-align: center;
-            font-weight: 600;
         }
 
-        @media (max-width: 600px) {
-            h1 { font-size: 2.8rem; }
-            .heart-wrapper { width: 290px; height: 290px; }
-            .heart-shape { width: 270px; height: 270px; }
-            .polaroid { width: 100%; max-width: 310px; }
-            .interactive-box { padding: 25px; }
-            .section-title { font-size: 2.6rem; }
+        /* Легкий поворот для небрежности */
+        .frame:nth-child(1) { transform: rotate(-2deg); }
+        .frame:nth-child(2) { transform: rotate(1deg); margin-top: 2rem; }
+        .frame:nth-child(3) { transform: rotate(-1deg); }
+
+        .frame:nth-child(1):hover,
+        .frame:nth-child(2):hover,
+        .frame:nth-child(3):hover {
+            transform: translateY(-15px) rotate(0deg);
+        }
+
+        @media (max-width: 768px) {
+            .heart-mask { width: 250px; height: 250px; }
+            .title { font-size: 2.2rem; }
+            .button-group { flex-direction: column; gap: 1rem; }
+            .frame:nth-child(2) { margin-top: 0; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="bgCanvas"></canvas>
-
-    <div class="container">
-        <header>
-            <h1>Для моей самой любимой Бесяки ❤️</h1>
-            <p class="subtitle">Ты — лучшее, что случилось в моей жизни ✨</p>
-        </header>
-
-        <!-- Главное анимированное сердце с портретом IMG_5927.png -->
-        <div class="heart-wrapper" id="heartWrapper">
-            <div class="heart-card" id="heartCard">
-                <div class="heart-shape" id="heartShape">
-                    <img src="IMG_5927.png" alt="Бесяка" class="heart-photo">
-                </div>
+    <!-- Главный экран -->
+    <section class="hero">
+        <!-- Обертки разделены: одна для 3D от мыши, другая для пульса -->
+        <div class="tilt-wrapper" id="tilt-box">
+            <div class="pulse-wrapper">
+                <!-- Селфи в сердце -->
+                <div class="heart-mask"></div>
             </div>
         </div>
 
-        <!-- Секция: Большие Комплименты -->
-        <h2 class="section-title">За что я тебя так сильно люблю 💕</h2>
-        <div class="compliments-grid">
-            <div class="compliment-card">
-                <div class="icon">✨</div>
-                <h3>Самая невероятная</h3>
-                <p>Твоя улыбка буквально освещает всё вокруг и заставляет меня улыбаться в ответ каждый день!</p>
-            </div>
-            <div class="compliment-card">
-                <div class="icon">😜</div>
-                <h3>Моя любимая Бесяка</h3>
-                <p>Ты умеешь быть врединкой, но именно за твой характерец и задорный смех я люблю тебя ещё сильнее!</p>
-            </div>
-            <div class="compliment-card">
-                <div class="icon">💖</div>
-                <h3>Нежная и заботливая</h3>
-                <p>Рядом с тобой всегда чувствуется невероятное тепло, уют и настоящая гармония.</p>
-            </div>
-            <div class="compliment-card">
-                <div class="icon">🌸</div>
-                <h3>Самая красивая</h3>
-                <p>В твоих глазах можно утонуть, а твоя красота завораживает с первой секунды.</p>
-            </div>
-        </div>
+        <h1 class="title">Для тебя</h1>
+        <p class="subtitle">Сквозь объектив и время</p>
 
-        <!-- Генератор любовных признаний -->
-        <div class="interactive-box">
-            <h2>Нажми на кнопку ниже 💌</h2>
-            <div id="dynamicCompliment">Нажми на кнопку, чтобы узнать ещё одну причину, почему ты лучшая! 🥰</div>
-            <button class="love-btn" id="loveBtn">Открыть комплимент для Бесяки 💋</button>
+        <!-- Центрированные кнопки -->
+        <div class="button-group">
+            <button class="btn" id="showGalleryBtn">Наши моменты</button>
         </div>
+    </section>
 
-        <!-- Галерея фотографий в рамках -->
-        <h2 class="section-title">Наши особенные кадры 📸</h2>
-        <div class="gallery">
-            <div class="polaroid">
+    <!-- Секция с фотографиями -->
+    <section class="gallery-section" id="gallery">
+        <h2 class="gallery-title">Запечатленные чувства</h2>
+        
+        <div class="gallery-grid">
+            <!-- Профиль (сбоку) -->
+            <div class="frame">
                 <img src="IMG_6670.jpeg" alt="Твой профиль">
-                <div class="caption">Мой любимый профиль ✨</div>
+                <div class="frame-caption">Твоя красота</div>
             </div>
-            <div class="polaroid">
+
+            <!-- Вместе перед зеркалом -->
+            <div class="frame">
                 <img src="IMG_6671.jpeg" alt="Мы перед зеркалом">
-                <div class="caption">Дурачимся вместе 💕</div>
+                <div class="frame-caption">Мы</div>
             </div>
-            <div class="polaroid">
+
+            <!-- На улице -->
+            <div class="frame">
                 <img src="IMG_6672.jpeg" alt="Ты на улице">
-                <div class="caption">Самая прекрасная 🌸</div>
+                <div class="frame-caption">Момент</div>
             </div>
         </div>
-
-        <footer>
-            Сделано с бесконечной любовью специально для моей Бесяки ❤️
-        </footer>
-    </div>
+    </section>
 
     <script>
-        // --- 1. Океан летающих сердечек и звездочек на фоне ---
-        const canvas = document.getElementById('bgCanvas');
-        const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        const particles = [];
-        const particleCount = 60; // Ещё больше сердечек на фоне
-
-        class Particle {
-            constructor() {
-                this.reset();
+        // 1. Плавный 3D-эффект для сердца при движении мыши (работает только на ПК)
+        const tiltBox = document.getElementById('tilt-box');
+        
+        window.addEventListener('mousemove', (e) => {
+            if (window.innerWidth > 768) {
+                let x = (window.innerWidth / 2 - e.pageX) / 30; // Чувствительность оси X
+                let y = (window.innerHeight / 2 - e.pageY) / 30; // Чувствительность оси Y
+                tiltBox.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
             }
-
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = canvas.height + Math.random() * 100;
-                this.size = Math.random() * 16 + 10;
-                this.speedY = Math.random() * 1.6 + 0.6;
-                this.speedX = (Math.random() - 0.5) * 0.9;
-                this.opacity = Math.random() * 0.65 + 0.35;
-                this.type = Math.random() > 0.3 ? 'heart' : 'star';
-                this.color = `hsl(${Math.random() * 35 + 325}, 90%, 65%)`;
-                this.rotation = Math.random() * Math.PI * 2;
-                this.rotSpeed = (Math.random() - 0.5) * 0.025;
-            }
-
-            update() {
-                this.y -= this.speedY;
-                this.x += this.speedX;
-                this.rotation += this.rotSpeed;
-
-                if (this.y < -35) {
-                    this.reset();
-                }
-            }
-
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.rotation);
-                ctx.globalAlpha = this.opacity;
-                ctx.fillStyle = this.color;
-
-                if (this.type === 'heart') {
-                    ctx.beginPath();
-                    const topCurveHeight = this.size * 0.3;
-                    ctx.moveTo(0, topCurveHeight);
-                    ctx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurveHeight);
-                    ctx.bezierCurveTo(-this.size / 2, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size);
-                    ctx.bezierCurveTo(0, this.size, this.size / 2, (this.size + topCurveHeight) / 2, this.size / 2, topCurveHeight);
-                    ctx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurveHeight);
-                    ctx.fill();
-                } else {
-                    ctx.beginPath();
-                    for (let i = 0; i < 5; i++) {
-                        ctx.lineTo(Math.cos((18 + i * 72) * Math.PI / 180) * this.size / 2,
-                                   -Math.sin((18 + i * 72) * Math.PI / 180) * this.size / 2);
-                        ctx.lineTo(Math.cos((54 + i * 72) * Math.PI / 180) * this.size / 4,
-                                   -Math.sin((54 + i * 72) * Math.PI / 180) * this.size / 4);
-                    }
-                    ctx.closePath();
-                    ctx.fill();
-                }
-
-                ctx.restore();
-            }
-        }
-
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-
-        // --- 2. 3D-наклон сердца при движении курсора ---
-        const heartWrapper = document.getElementById('heartWrapper');
-        const heartCard = document.getElementById('heartCard');
-
-        document.addEventListener('mousemove', (e) => {
-            const rect = heartWrapper.getBoundingClientRect();
-            const heartCenterX = rect.left + rect.width / 2;
-            const heartCenterY = rect.top + rect.height / 2;
-
-            const deltaX = e.clientX - heartCenterX;
-            const deltaY = e.clientY - heartCenterY;
-
-            const rotateX = (-deltaY / window.innerHeight) * 35;
-            const rotateY = (deltaX / window.innerWidth) * 35;
-
-            heartCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
 
-        document.addEventListener('mouseleave', () => {
-            heartCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        // Возврат сердца в исходное положение если курсор ушел с экрана
+        window.addEventListener('mouseout', () => {
+            tiltBox.style.transform = `rotateY(0deg) rotateX(0deg)`;
         });
 
-        // --- 3. Мощный салют из сердечек при клике ---
-        function createExplosion(x, y) {
-            const heartIcons = ['❤️', '💖', '💕', '💗', '💓', '🌸', '✨', '💋'];
-            for (let i = 0; i < 45; i++) {
-                const particle = document.createElement('div');
-                particle.innerHTML = heartIcons[Math.floor(Math.random() * heartIcons.length)];
-                particle.style.position = 'fixed';
-                particle.style.left = `${x}px`;
-                particle.style.top = `${y}px`;
-                particle.style.fontSize = `${Math.random() * 24 + 16}px`;
-                particle.style.pointerEvents = 'none';
-                particle.style.zIndex = '9999';
-                particle.style.transition = 'transform 1.2s cubic-bezier(0.1, 0.8, 0.3, 1), opacity 1.2s';
+        // 2. Логика появления галереи по клику на центральную кнопку
+        const showGalleryBtn = document.getElementById('showGalleryBtn');
+        const gallery = document.getElementById('gallery');
 
-                document.body.appendChild(particle);
-
-                const angle = Math.random() * Math.PI * 2;
-                const velocity = Math.random() * 220 + 60;
-                const targetX = Math.cos(angle) * velocity;
-                const targetY = Math.sin(angle) * velocity;
-
-                setTimeout(() => {
-                    particle.style.transform = `translate(${targetX}px, ${targetY}px) scale(0.2) rotate(${Math.random() * 360}deg)`;
-                    particle.style.opacity = '0';
-                }, 10);
-
-                setTimeout(() => {
-                    particle.remove();
-                }, 1200);
-            }
-        }
-
-        heartWrapper.addEventListener('click', (e) => {
-            createExplosion(e.clientX, e.clientY);
-        });
-
-        // --- 4. Генератор ласковых комплиментов ---
-        const compliments = [
-            "Ты — моя самая главная радость и счастье! ❤️",
-            "Даже когда ты вредничаешь и бесишься, ты остаёшься самой милой на свете! 😜💕",
-            "Твои обнимашки — лучшее лекарство от любой усталости! 🤗✨",
-            "Обожаю, когда мы дурачимся вместе! С тобой так легко и классно! 💖",
-            "Ты делаешь каждый мой день ярче и наполняешь его смыслом! 🌸",
-            "Моя любимая Бесяка, ты самое драгоценное, что у меня есть! 💎❤️",
-            "Твой смех — мой самый любимый звук во вселенной! 🎶🥰",
-            "Ты прекрасна в любой момент: и когда наряжаешься, и когда дома в пижамке! 🌺"
-        ];
-
-        let lastIndex = -1;
-        const loveBtn = document.getElementById('loveBtn');
-        const dynamicCompliment = document.getElementById('dynamicCompliment');
-
-        loveBtn.addEventListener('click', (e) => {
-            const rect = loveBtn.getBoundingClientRect();
-            createExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2);
-
-            let randomIndex;
-            do {
-                randomIndex = Math.floor(Math.random() * compliments.length);
-            } while (randomIndex === lastIndex);
-            
-            lastIndex = randomIndex;
-
-            dynamicCompliment.style.opacity = '0';
-            dynamicCompliment.style.transform = 'scale(0.95)';
-            
+        showGalleryBtn.addEventListener('click', () => {
+            gallery.classList.add('visible');
+            // Плавный скролл к галерее
             setTimeout(() => {
-                dynamicCompliment.textContent = compliments[randomIndex];
-                dynamicCompliment.style.opacity = '1';
-                dynamicCompliment.style.transform = 'scale(1)';
-            }, 200);
+                gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+            
+            // Меняем текст кнопки после нажатия
+            if(showGalleryBtn.innerText === 'НАШИ МОМЕНТЫ') {
+                showGalleryBtn.innerText = 'СМОТРЕТЬ НИЖЕ ↓';
+                showGalleryBtn.style.background = 'var(--text-color)';
+                showGalleryBtn.style.color = 'var(--bg-color)';
+            }
         });
     </script>
 </body>
