@@ -6,13 +6,14 @@
     <title>Для тебя</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #FDFBF7;
-            --text-color: #3A3331;
-            --accent-color: #9E8178;
+            --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            --text-color: #2c2725;
+            --accent-color: #b78a82;
+            --heart-glow: rgba(183, 138, 130, 0.4);
         }
 
         * {
@@ -22,124 +23,187 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background: var(--bg-gradient);
             color: var(--text-color);
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
-        /* --- Элегантная секция приветствия --- */
+        /* --- Главный экран --- */
         .hero {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 4rem 2rem;
             position: relative;
-            perspective: 1000px; /* Для 3D эффекта */
         }
 
-        /* --- 3D и Пульс Сердца --- */
-        .tilt-wrapper {
-            transition: transform 0.1s ease-out;
-            margin-bottom: 2rem;
-        }
-
-        .pulse-wrapper {
-            animation: breathe 4s ease-in-out infinite;
-            filter: drop-shadow(0 20px 30px rgba(158, 129, 120, 0.3));
-        }
-
-        .heart-mask {
-            width: 320px;
-            height: 320px;
-            background-image: url('IMG_5927.png');
-            background-size: cover;
-            background-position: center;
-            /* Идеальная маска сердца через SVG */
-            -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z'/%3E%3C/svg%3E");
-            -webkit-mask-size: contain;
-            -webkit-mask-repeat: no-repeat;
-            -webkit-mask-position: center;
-            mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z'/%3E%3C/svg%3E");
-            mask-size: contain;
-            mask-repeat: no-repeat;
-            mask-position: center;
-            cursor: pointer;
-            transition: filter 0.5s ease;
-        }
-
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.04); }
-        }
-
-        /* --- Типографика и Кнопки --- */
-        .title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3rem;
-            font-weight: 400;
-            letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-            text-align: center;
-        }
-
-        .subtitle {
-            font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--accent-color);
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .button-group {
+        /* --- Портрет и Обволакивающее Сердце --- */
+        .portrait-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
             display: flex;
-            gap: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        /* Фотография девушки */
+        .hero-portrait {
+            width: 260px;
+            height: 360px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            z-index: 2;
+            position: relative;
+            border: 6px solid #fff;
+        }
+
+        /* Анимированное сердце на фоне */
+        .enveloping-heart {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            z-index: 1;
+            fill: none;
+            stroke: var(--accent-color);
+            stroke-width: 2;
+            filter: drop-shadow(0 0 15px var(--heart-glow));
+            animation: envelopePulse 4s infinite ease-in-out;
+        }
+
+        @keyframes envelopePulse {
+            0% { transform: scale(0.9) rotate(-3deg); opacity: 0.6; stroke-width: 2; }
+            50% { transform: scale(1.05) rotate(3deg); opacity: 1; stroke-width: 4; filter: drop-shadow(0 0 25px var(--heart-glow)); }
+            100% { transform: scale(0.9) rotate(-3deg); opacity: 0.6; stroke-width: 2; }
+        }
+
+        /* --- Таймер --- */
+        .timer-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 2rem 4rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .timer-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-style: italic;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .infinity-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .timer-numbers {
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            display: flex;
+            gap: 15px;
             justify-content: center;
         }
+        
+        .time-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        .btn {
-            background: transparent;
-            color: var(--text-color);
-            border: 1px solid var(--text-color);
-            padding: 12px 32px;
+        .time-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .time-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #777;
+        }
+
+        /* --- Кнопка и 100 слов --- */
+        .btn-love {
+            background: var(--text-color);
+            color: #fff;
+            border: none;
+            padding: 16px 40px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.85rem;
+            font-size: 1rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.4s ease;
-            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(44, 39, 37, 0.2);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn:hover {
-            background: var(--text-color);
-            color: var(--bg-color);
+        .btn-love:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(44, 39, 37, 0.3);
+            background: var(--accent-color);
         }
 
-        /* --- Секция Галереи (Скрыта по умолчанию) --- */
-        .gallery-section {
+        .love-wall {
+            max-width: 900px;
+            text-align: center;
+            line-height: 2;
+            font-size: 1.1rem;
+            font-family: 'Cormorant Garamond', serif;
+            max-height: 0;
             opacity: 0;
-            transform: translateY(50px);
-            transition: all 1s ease;
+            overflow: hidden;
+            transition: all 1.5s ease-in-out;
+            padding: 0 2rem;
+        }
+
+        .love-wall.open {
+            max-height: 2000px; /* Достаточно для раскрытия текста */
+            opacity: 1;
+            margin-bottom: 5rem;
+            padding: 2rem;
+        }
+
+        .highlight-word {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-style: italic;
+            font-size: 1.3rem;
+            margin: 0 8px;
+        }
+
+        .standard-word {
+            color: var(--text-color);
+            margin: 0 5px;
+        }
+
+        /* --- Галерея --- */
+        .gallery-section {
             padding: 5rem 2rem;
-            display: none; /* Изначально скрыто */
+            display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #F8F5F1;
-        }
-
-        .gallery-section.visible {
-            display: flex;
-            opacity: 1;
-            transform: translateY(0);
+            background-color: #fff;
         }
 
         .gallery-title {
@@ -157,19 +221,18 @@
             max-width: 1200px;
         }
 
-        /* --- Элегантные рамки (Полароиды) --- */
         .frame {
             background: #FFFFFF;
             padding: 1.2rem 1.2rem 4rem 1.2rem;
             box-shadow: 0 15px 35px rgba(0,0,0,0.06);
             transition: all 0.5s ease;
             position: relative;
-            cursor: pointer;
         }
 
         .frame:hover {
-            transform: translateY(-15px);
+            transform: translateY(-10px) scale(1.02);
             box-shadow: 0 25px 45px rgba(0,0,0,0.12);
+            z-index: 10;
         }
 
         .frame img {
@@ -191,21 +254,13 @@
             color: #777;
         }
 
-        /* Легкий поворот для небрежности */
-        .frame:nth-child(1) { transform: rotate(-2deg); }
-        .frame:nth-child(2) { transform: rotate(1deg); margin-top: 2rem; }
+        .frame:nth-child(1) { transform: rotate(-3deg); }
+        .frame:nth-child(2) { transform: rotate(2deg); margin-top: 2rem; }
         .frame:nth-child(3) { transform: rotate(-1deg); }
 
-        .frame:nth-child(1):hover,
-        .frame:nth-child(2):hover,
-        .frame:nth-child(3):hover {
-            transform: translateY(-15px) rotate(0deg);
-        }
-
         @media (max-width: 768px) {
-            .heart-mask { width: 250px; height: 250px; }
-            .title { font-size: 2.2rem; }
-            .button-group { flex-direction: column; gap: 1rem; }
+            .timer-section { padding: 1.5rem; }
+            .infinity-text { font-size: 2.5rem; }
             .frame:nth-child(2) { margin-top: 0; }
         }
     </style>
@@ -214,81 +269,131 @@
 
     <!-- Главный экран -->
     <section class="hero">
-        <!-- Обертки разделены: одна для 3D от мыши, другая для пульса -->
-        <div class="tilt-wrapper" id="tilt-box">
-            <div class="pulse-wrapper">
-                <!-- Селфи в сердце -->
-                <div class="heart-mask"></div>
+        
+        <!-- Контейнер с фото и обволакивающим сердцем -->
+        <div class="portrait-container">
+            <!-- SVG Сердце на заднем фоне -->
+            <svg class="enveloping-heart" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/>
+            </svg>
+            <!-- Фото девушки -->
+            <img src="IMG_5927.png" alt="Твой портрет" class="hero-portrait">
+        </div>
+
+        <!-- Таймер любви -->
+        <div class="timer-section">
+            <div class="timer-title">Я люблю тебя уже:</div>
+            <div class="infinity-text">∞ БЕСКОНЕЧНО</div>
+            <div class="timer-numbers" id="timer">
+                <div class="time-block"><span class="time-value" id="days">0</span><span class="time-label">Дней</span></div>
+                <span class="time-value">:</span>
+                <div class="time-block"><span class="time-value" id="hours">00</span><span class="time-label">Часов</span></div>
+                <span class="time-value">:</span>
+                <div class="time-block"><span class="time-value" id="minutes">00</span><span class="time-label">Минут</span></div>
+                <span class="time-value">:</span>
+                <div class="time-block"><span class="time-value" id="seconds">00</span><span class="time-label">Секунд</span></div>
             </div>
         </div>
 
-        <h1 class="title">Для тебя</h1>
-        <p class="subtitle">Сквозь объектив и время</p>
+        <!-- Кнопка 100 признаний -->
+        <button class="btn-love" id="loveBtn">Узнать, что я чувствую</button>
 
-        <!-- Центрированные кнопки -->
-        <div class="button-group">
-            <button class="btn" id="showGalleryBtn">Наши моменты</button>
+        <!-- Стена признаний -->
+        <div class="love-wall" id="loveWall">
+            <!-- Текст сгенерируется через JS -->
         </div>
+
     </section>
 
     <!-- Секция с фотографиями -->
     <section class="gallery-section" id="gallery">
-        <h2 class="gallery-title">Запечатленные чувства</h2>
+        <h2 class="gallery-title">Наши лучшие моменты</h2>
         
         <div class="gallery-grid">
             <!-- Профиль (сбоку) -->
             <div class="frame">
                 <img src="IMG_6670.jpeg" alt="Твой профиль">
-                <div class="frame-caption">Твоя красота</div>
+                <div class="frame-caption">Мой идеал</div>
             </div>
 
             <!-- Вместе перед зеркалом -->
             <div class="frame">
                 <img src="IMG_6671.jpeg" alt="Мы перед зеркалом">
-                <div class="frame-caption">Мы</div>
+                <div class="frame-caption">Самые счастливые</div>
             </div>
 
             <!-- На улице -->
             <div class="frame">
                 <img src="IMG_6672.jpeg" alt="Ты на улице">
-                <div class="frame-caption">Момент</div>
+                <div class="frame-caption">Мое всё</div>
             </div>
         </div>
     </section>
 
     <script>
-        // 1. Плавный 3D-эффект для сердца при движении мыши (работает только на ПК)
-        const tiltBox = document.getElementById('tilt-box');
-        
-        window.addEventListener('mousemove', (e) => {
-            if (window.innerWidth > 768) {
-                let x = (window.innerWidth / 2 - e.pageX) / 30; // Чувствительность оси X
-                let y = (window.innerHeight / 2 - e.pageY) / 30; // Чувствительность оси Y
-                tiltBox.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        // --- 1. Настройка таймера ---
+        // ЗАМЕНИ ДАТУ ЗДЕСЬ на вашу дату начала отношений. Формат: Год-Месяц-ДеньTЧасы:Минуты:Секунды
+        // Пример: "2023-08-15T14:30:00"
+        const startDate = new Date("2023-01-01T00:00:00").getTime();
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const difference = now - startDate;
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // --- 2. Генерация 100 признаний с комплиментами ---
+        const loveBtn = document.getElementById('loveBtn');
+        const loveWall = document.getElementById('loveWall');
+
+        const compliments = [
+            "Ты самая красивая", "Моя вселенная", "Моя нежность", 
+            "Ты потрясающая", "Мой лучик света", "Идеал", 
+            "Смысл моей жизни", "Ты невероятная", "Самая заботливая", 
+            "Мое вдохновение", "Лучшее, что со мной случалось", "Мой ангел"
+        ];
+
+        function generateLoveText() {
+            let htmlContent = "";
+            let compIndex = 0;
+
+            for (let i = 1; i <= 100; i++) {
+                htmlContent += `<span class="standard-word">Я тебя люблю.</span> `;
+                
+                // Вставляем комплимент каждые 4-5 фраз
+                if (i % 4 === 0) {
+                    htmlContent += `<span class="highlight-word"> ${compliments[compIndex]}! </span>`;
+                    compIndex = (compIndex + 1) % compliments.length;
+                }
             }
-        });
+            return htmlContent;
+        }
 
-        // Возврат сердца в исходное положение если курсор ушел с экрана
-        window.addEventListener('mouseout', () => {
-            tiltBox.style.transform = `rotateY(0deg) rotateX(0deg)`;
-        });
-
-        // 2. Логика появления галереи по клику на центральную кнопку
-        const showGalleryBtn = document.getElementById('showGalleryBtn');
-        const gallery = document.getElementById('gallery');
-
-        showGalleryBtn.addEventListener('click', () => {
-            gallery.classList.add('visible');
-            // Плавный скролл к галерее
-            setTimeout(() => {
-                gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-            
-            // Меняем текст кнопки после нажатия
-            if(showGalleryBtn.innerText === 'НАШИ МОМЕНТЫ') {
-                showGalleryBtn.innerText = 'СМОТРЕТЬ НИЖЕ ↓';
-                showGalleryBtn.style.background = 'var(--text-color)';
-                showGalleryBtn.style.color = 'var(--bg-color)';
+        loveBtn.addEventListener('click', () => {
+            if (!loveWall.classList.contains('open')) {
+                loveWall.innerHTML = generateLoveText();
+                loveWall.classList.add('open');
+                loveBtn.innerText = "Закрыть";
+                
+                // Плавный скролл к тексту
+                setTimeout(() => {
+                    loveWall.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            } else {
+                loveWall.classList.remove('open');
+                loveBtn.innerText = "Узнать, что я чувствую";
             }
         });
     </script>
