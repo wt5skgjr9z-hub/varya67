@@ -6,14 +6,15 @@
     <title>Для тебя</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-            --text-color: #2c2725;
-            --accent-color: #b78a82;
-            --heart-glow: rgba(183, 138, 130, 0.4);
+            /* Романтичный розовый градиент */
+            --bg-gradient: linear-gradient(135deg, #ffd1dc 0%, #ff9a9e 100%);
+            --text-color: #5c1a2b; /* Темно-бордовый для контраста */
+            --accent-color: #ff4d6d; /* Насыщенный розово-красный */
+            --heart-glow: rgba(255, 77, 109, 0.6);
         }
 
         * {
@@ -29,6 +30,34 @@
             min-height: 100vh;
             overflow-x: hidden;
             scroll-behavior: smooth;
+            position: relative;
+        }
+
+        /* --- Фоновые сердечки --- */
+        .bg-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-heart {
+            position: absolute;
+            bottom: -10%;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.4);
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-110vh) scale(1.5) rotate(360deg); opacity: 0; }
         }
 
         /* --- Главный экран --- */
@@ -40,6 +69,7 @@
             justify-content: center;
             padding: 4rem 2rem;
             position: relative;
+            z-index: 1; /* Чтобы быть поверх фоновых сердец */
         }
 
         /* --- Портрет и Обволакивающее Сердце --- */
@@ -51,6 +81,7 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 3rem;
+            cursor: pointer; /* Показываем, что сюда можно нажать */
         }
 
         /* Фотография девушки */
@@ -59,10 +90,11 @@
             height: 360px;
             object-fit: cover;
             border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 40px rgba(200, 50, 80, 0.3);
             z-index: 2;
             position: relative;
             border: 6px solid #fff;
+            pointer-events: none; /* Чтобы клик проходил на контейнер */
         }
 
         /* Анимированное сердце на фоне */
@@ -73,31 +105,47 @@
             z-index: 1;
             fill: none;
             stroke: var(--accent-color);
-            stroke-width: 2;
+            stroke-width: 3;
             filter: drop-shadow(0 0 15px var(--heart-glow));
-            animation: envelopePulse 4s infinite ease-in-out;
+            animation: envelopePulse 3s infinite ease-in-out;
+            pointer-events: none;
         }
 
         @keyframes envelopePulse {
-            0% { transform: scale(0.9) rotate(-3deg); opacity: 0.6; stroke-width: 2; }
-            50% { transform: scale(1.05) rotate(3deg); opacity: 1; stroke-width: 4; filter: drop-shadow(0 0 25px var(--heart-glow)); }
-            100% { transform: scale(0.9) rotate(-3deg); opacity: 0.6; stroke-width: 2; }
+            0% { transform: scale(0.9) rotate(-3deg); opacity: 0.7; stroke-width: 3; }
+            50% { transform: scale(1.08) rotate(3deg); opacity: 1; stroke-width: 5; filter: drop-shadow(0 0 30px var(--heart-glow)); }
+            100% { transform: scale(0.9) rotate(-3deg); opacity: 0.7; stroke-width: 3; }
+        }
+
+        /* --- Анимация вылетающих сердечек при клике --- */
+        .click-heart {
+            position: fixed; /* Фиксированное позиционирование для точных координат курсора */
+            font-size: 24px;
+            pointer-events: none;
+            animation: flyOut 1s ease-out forwards;
+            z-index: 100;
+        }
+
+        @keyframes flyOut {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.5); opacity: 0; }
         }
 
         /* --- Таймер --- */
         .timer-section {
             text-align: center;
             margin-bottom: 4rem;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.6);
             padding: 2rem 4rem;
-            border-radius: 20px;
+            border-radius: 25px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 15px 35px rgba(200, 50, 80, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.8);
         }
 
         .timer-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-style: italic;
             color: var(--text-color);
             margin-bottom: 0.5rem;
@@ -110,15 +158,16 @@
             color: var(--accent-color);
             margin-bottom: 1rem;
             letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.3);
         }
 
         .timer-numbers {
             font-size: 1rem;
-            font-weight: 500;
-            letter-spacing: 1px;
+            font-weight: 600;
             display: flex;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
+            color: var(--text-color);
         }
         
         .time-block {
@@ -128,68 +177,72 @@
         }
 
         .time-value {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 600;
         }
 
         .time-label {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #777;
+            color: #8c4a5c;
+            margin-top: 5px;
         }
 
         /* --- Кнопка и 100 слов --- */
         .btn-love {
-            background: var(--text-color);
+            background: var(--accent-color);
             color: #fff;
             border: none;
-            padding: 16px 40px;
+            padding: 18px 45px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
             cursor: pointer;
-            border-radius: 30px;
+            border-radius: 40px;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(44, 39, 37, 0.2);
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.4);
             margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
         }
 
         .btn-love:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(44, 39, 37, 0.3);
-            background: var(--accent-color);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 25px rgba(255, 77, 109, 0.6);
+            background: #ff2a55;
         }
 
         .love-wall {
             max-width: 900px;
             text-align: center;
-            line-height: 2;
-            font-size: 1.1rem;
+            line-height: 2.2;
+            font-size: 1.2rem;
             font-family: 'Cormorant Garamond', serif;
             max-height: 0;
             opacity: 0;
             overflow: hidden;
             transition: all 1.5s ease-in-out;
             padding: 0 2rem;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
         }
 
         .love-wall.open {
-            max-height: 2000px; /* Достаточно для раскрытия текста */
+            max-height: 2500px;
             opacity: 1;
             margin-bottom: 5rem;
             padding: 2rem;
+            box-shadow: 0 10px 30px rgba(200, 50, 80, 0.1);
         }
 
         .highlight-word {
             color: var(--accent-color);
             font-weight: 600;
             font-style: italic;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin: 0 8px;
+            text-shadow: 0 0 5px rgba(255, 77, 109, 0.2);
         }
 
         .standard-word {
@@ -203,14 +256,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #fff;
+            /* Легкий розово-белый фон для секции галереи */
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.7));
+            position: relative;
+            z-index: 1;
         }
 
         .gallery-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
-            font-weight: 400;
+            font-size: 3rem;
+            font-weight: 600;
             margin-bottom: 4rem;
+            color: var(--text-color);
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
         }
 
         .gallery-grid {
@@ -224,14 +282,15 @@
         .frame {
             background: #FFFFFF;
             padding: 1.2rem 1.2rem 4rem 1.2rem;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+            box-shadow: 0 15px 35px rgba(150, 30, 60, 0.15);
             transition: all 0.5s ease;
             position: relative;
+            border-radius: 4px;
         }
 
         .frame:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 25px 45px rgba(0,0,0,0.12);
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 25px 45px rgba(150, 30, 60, 0.25);
             z-index: 10;
         }
 
@@ -250,8 +309,9 @@
             left: 0;
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            font-size: 1.2rem;
-            color: #777;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: var(--accent-color);
         }
 
         .frame:nth-child(1) { transform: rotate(-3deg); }
@@ -261,17 +321,21 @@
         @media (max-width: 768px) {
             .timer-section { padding: 1.5rem; }
             .infinity-text { font-size: 2.5rem; }
+            .timer-numbers { gap: 10px; }
             .frame:nth-child(2) { margin-top: 0; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Фоновые сердечки -->
+    <div class="bg-hearts" id="bgHearts"></div>
+
     <!-- Главный экран -->
     <section class="hero">
         
-        <!-- Контейнер с фото и обволакивающим сердцем -->
-        <div class="portrait-container">
+        <!-- Контейнер с фото и кликабельным эффектом -->
+        <div class="portrait-container" id="heartContainer">
             <!-- SVG Сердце на заднем фоне -->
             <svg class="enveloping-heart" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                 <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/>
@@ -285,7 +349,7 @@
             <div class="timer-title">Я люблю тебя уже:</div>
             <div class="infinity-text">∞ БЕСКОНЕЧНО</div>
             <div class="timer-numbers" id="timer">
-                <div class="time-block"><span class="time-value" id="days">0</span><span class="time-label">Дней</span></div>
+                <div class="time-block"><span class="time-value">∞</span><span class="time-label">Дней</span></div>
                 <span class="time-value">:</span>
                 <div class="time-block"><span class="time-value" id="hours">00</span><span class="time-label">Часов</span></div>
                 <span class="time-value">:</span>
@@ -299,15 +363,13 @@
         <button class="btn-love" id="loveBtn">Узнать, что я чувствую</button>
 
         <!-- Стена признаний -->
-        <div class="love-wall" id="loveWall">
-            <!-- Текст сгенерируется через JS -->
-        </div>
+        <div class="love-wall" id="loveWall"></div>
 
     </section>
 
     <!-- Секция с фотографиями -->
     <section class="gallery-section" id="gallery">
-        <h2 class="gallery-title">Наши лучшие моменты</h2>
+        <h2 class="gallery-title">Наши лучшие моменты 🩷</h2>
         
         <div class="gallery-grid">
             <!-- Профиль (сбоку) -->
@@ -331,21 +393,77 @@
     </section>
 
     <script>
-        // --- 1. Настройка таймера ---
-        // ЗАМЕНИ ДАТУ ЗДЕСЬ на вашу дату начала отношений. Формат: Год-Месяц-ДеньTЧасы:Минуты:Секунды
-        // Пример: "2023-08-15T14:30:00"
+        // --- 1. Генерация фоновых летящих сердечек ---
+        const bgHeartsContainer = document.getElementById('bgHearts');
+        const heartEmojis = ['🩷', '💖', '💗', '💓', '💕'];
+        
+        function createBgHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('bg-heart');
+            heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            
+            // Случайная позиция по горизонтали, размер и скорость
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 10 + 10) + 's'; // От 10 до 20 секунд
+            heart.style.fontSize = (Math.random() * 1.5 + 0.5) + 'rem'; // Разный размер
+            
+            bgHeartsContainer.appendChild(heart);
+            
+            // Удаляем сердечко после завершения анимации, чтобы не засорять память
+            setTimeout(() => {
+                heart.remove();
+            }, 20000);
+        }
+
+        // Создаем сердечки каждые 400мс
+        setInterval(createBgHeart, 400);
+
+        // --- 2. Интерактивные сердечки при клике на портрет ---
+        const heartContainer = document.getElementById('heartContainer');
+
+        heartContainer.addEventListener('click', (e) => {
+            // Создаем от 8 до 15 сердечек за один клик
+            const count = Math.floor(Math.random() * 8) + 8;
+            
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('click-heart');
+                heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                
+                // Устанавливаем координаты клика
+                heart.style.left = e.clientX + 'px';
+                heart.style.top = e.clientY + 'px';
+                
+                // Случайное направление разлета (от -150px до +150px)
+                const tx = (Math.random() - 0.5) * 300 + 'px';
+                const ty = (Math.random() - 0.5) * 300 + 'px';
+                heart.style.setProperty('--tx', tx);
+                heart.style.setProperty('--ty', ty);
+                
+                // Случайный поворот
+                heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+                document.body.appendChild(heart);
+
+                // Удаляем элемент после завершения анимации (1 сек)
+                setTimeout(() => {
+                    heart.remove();
+                }, 1000);
+            }
+        });
+
+        // --- 3. Настройка таймера (Только часы, минуты, секунды) ---
+        // Дни теперь зафиксированы как ∞ в HTML.
         const startDate = new Date("2023-01-01T00:00:00").getTime();
 
         function updateTimer() {
             const now = new Date().getTime();
             const difference = now - startDate;
 
-            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-            document.getElementById("days").innerText = days;
             document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
             document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
             document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
@@ -354,7 +472,7 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // --- 2. Генерация 100 признаний с комплиментами ---
+        // --- 4. Генерация 100 признаний с комплиментами ---
         const loveBtn = document.getElementById('loveBtn');
         const loveWall = document.getElementById('loveWall');
 
@@ -362,7 +480,8 @@
             "Ты самая красивая", "Моя вселенная", "Моя нежность", 
             "Ты потрясающая", "Мой лучик света", "Идеал", 
             "Смысл моей жизни", "Ты невероятная", "Самая заботливая", 
-            "Мое вдохновение", "Лучшее, что со мной случалось", "Мой ангел"
+            "Мое вдохновение", "Лучшее, что со мной случалось", "Мой ангел",
+            "Моя радость", "Самая прекрасная девушка на свете"
         ];
 
         function generateLoveText() {
@@ -372,9 +491,8 @@
             for (let i = 1; i <= 100; i++) {
                 htmlContent += `<span class="standard-word">Я тебя люблю.</span> `;
                 
-                // Вставляем комплимент каждые 4-5 фраз
                 if (i % 4 === 0) {
-                    htmlContent += `<span class="highlight-word"> ${compliments[compIndex]}! </span>`;
+                    htmlContent += `<span class="highlight-word"> ${compliments[compIndex]}! 🩷 </span>`;
                     compIndex = (compIndex + 1) % compliments.length;
                 }
             }
@@ -387,7 +505,6 @@
                 loveWall.classList.add('open');
                 loveBtn.innerText = "Закрыть";
                 
-                // Плавный скролл к тексту
                 setTimeout(() => {
                     loveWall.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 300);
